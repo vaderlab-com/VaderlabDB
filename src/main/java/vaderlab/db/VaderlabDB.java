@@ -22,7 +22,6 @@ public class VaderlabDB {
             kernel= new AppKernel(context, "dev");
             kernel.run();
 
-
             dbp.database("test");
 
             kernel.shutdown();

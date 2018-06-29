@@ -7,6 +7,7 @@ import vaderlab.db.core.environment.Environment;
 import vaderlab.db.core.event.EventDispatcherService;
 import vaderlab.db.db.event.DBCreate;
 import vaderlab.db.db.event.DBError;
+import vaderlab.db.db.provider.berkeley.BerkeleyDBProvider;
 import vaderlab.db.db.throwable.DatabaseAlreadyExists;
 
 import java.util.HashMap;
@@ -47,9 +48,14 @@ public class DatabaseFactory {
             throw new DatabaseAlreadyExists( );
         }
 
-        eventDispatcherService.dispatch( new DBCreate( database ));
 
-        return null;
+        DatabaseProvider dp = new BerkeleyDBProvider();
+
+        this.databases.put( database, dp );
+
+        eventDispatcherService.dispatch( new DBCreate( database ) );
+
+        return dp;
     }
 
     public boolean databaseContains( String database ) {
