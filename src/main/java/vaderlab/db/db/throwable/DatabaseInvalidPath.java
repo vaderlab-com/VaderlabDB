@@ -17,7 +17,7 @@ public class DatabaseInvalidPath extends Throwable {
         this.code  = code;
     }
 
-    Integer getCode() {
+    public Integer getCode() {
         return code;
     }
 

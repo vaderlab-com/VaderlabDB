@@ -1,13 +1,13 @@
 package vaderlab.db.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import vaderlab.db.core.environment.Environment;
 import vaderlab.db.core.event.EventDispatcherService;
 import vaderlab.db.db.event.DBCreate;
 import vaderlab.db.db.event.DBError;
-import vaderlab.db.db.provider.berkeley.BerkeleyDBProvider;
+import vaderlab.db.db.provider.berkeley.DBProvider;
 import vaderlab.db.db.throwable.DatabaseAlreadyExists;
 
 import java.util.HashMap;
@@ -20,10 +20,13 @@ public class DatabaseFactory {
 
     private EventDispatcherService eventDispatcherService;
 
+    private ApplicationContext appContext;
+
     @Autowired(required=true)
-    DatabaseFactory( EventDispatcherService eventDispatcherService ) {
+    DatabaseFactory(ApplicationContext appContext, EventDispatcherService eventDispatcherService ) {
 
         this.eventDispatcherService = eventDispatcherService;
+        this.appContext = appContext;
         this.databases = new HashMap<>();
     }
 
@@ -49,7 +52,7 @@ public class DatabaseFactory {
         }
 
 
-        DatabaseProvider dp = new BerkeleyDBProvider();
+        DatabaseProvider dp = new DBProvider( appContext, database );
 
         this.databases.put( database, dp );
 

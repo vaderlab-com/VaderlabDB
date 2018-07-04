@@ -20,6 +20,7 @@ public class EnvironmentFactory {
 
         envCfg.setAllowCreate( true );
         envCfg.setTransactional( true );
+        envCfg.setCacheSize( 1000000 );
 
         Environment env = new Environment( dbPath, envCfg );
 
@@ -30,7 +31,9 @@ public class EnvironmentFactory {
     protected void checkPath( File dbPath ) throws DatabaseInvalidPath {
         Integer code = 0;
 
-        if( !dbPath.exists() ) {
+        /** @todo: Invalid */
+        if( !dbPath.exists() && !dbPath.mkdirs() ) {
+
             throw new DatabaseInvalidPath( DatabaseInvalidPath.E_NO_EXISTS, dbPath );
         }
 
